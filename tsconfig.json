@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"module": "node16",
+		"target": "es2019",
+		"lib": ["es2019"],
+		"declaration": true,
+		"skipLibCheck": true,
+		"moduleResolution": "node16",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"outDir": "./dist",
+		"rootDir": "./src"
+	},
+	"include": ["src/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

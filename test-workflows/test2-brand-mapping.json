@@ -1,0 +1,176 @@
+{
+	"name": "[TEST] Switch Set - Brand Mapping + Dot Notation + Tipi",
+	"settings": {},
+	"nodes": [
+		{
+			"parameters": {},
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [0, 200],
+			"id": "trigger-2",
+			"name": "Manual Trigger"
+		},
+		{
+			"parameters": {
+				"jsCode": "return [\n  {json: {brand: 'VOLKSWAGEN', price: 150}},\n  {json: {brand: 'BMW', price: 200}},\n  {json: {brand: 'FIAT', price: 80}},\n  {json: {brand: 'UNKNOWN_BRAND', price: 50}}\n];"
+			},
+			"type": "n8n-nodes-base.code",
+			"typeVersion": 2,
+			"position": [240, 200],
+			"id": "code-brands",
+			"name": "Test Data"
+		},
+		{
+			"parameters": {
+				"assignments": {
+					"values": [
+						{
+							"targetField": "config.supplier",
+							"rules": {
+								"values": [
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-vw",
+													"leftValue": "={{ $json.brand }}",
+													"rightValue": "VOLKSWAGEN",
+													"operator": { "type": "string", "operation": "equals" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "stringValue",
+										"stringValue": "vw_parts"
+									},
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-bmw",
+													"leftValue": "={{ $json.brand }}",
+													"rightValue": "BMW",
+													"operator": { "type": "string", "operation": "equals" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "stringValue",
+										"stringValue": "bmw_parts"
+									},
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-fiat",
+													"leftValue": "={{ $json.brand }}",
+													"rightValue": "FIAT",
+													"operator": { "type": "string", "operation": "equals" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "stringValue",
+										"stringValue": "fiat_parts"
+									}
+								]
+							},
+							"defaultType": "stringValue",
+							"defaultStringValue": "generic_parts"
+						},
+						{
+							"targetField": "config.premium",
+							"rules": {
+								"values": [
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-price",
+													"leftValue": "={{ $json.price }}",
+													"rightValue": "100",
+													"operator": { "type": "number", "operation": "gte" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "booleanValue",
+										"booleanValue": "true"
+									}
+								]
+							},
+							"defaultType": "booleanValue",
+							"defaultBooleanValue": "false"
+						},
+						{
+							"targetField": "config.discount",
+							"rules": {
+								"values": [
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-cheap",
+													"leftValue": "={{ $json.price }}",
+													"rightValue": "100",
+													"operator": { "type": "number", "operation": "lt" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "numberValue",
+										"numberValue": "10"
+									}
+								]
+							},
+							"defaultType": "numberValue",
+							"defaultNumberValue": "0"
+						}
+					]
+				},
+				"options": {
+					"ignoreCase": true,
+					"looseTypeValidation": true
+				}
+			},
+			"type": "n8n-nodes-switch-set.switchSet",
+			"typeVersion": 1,
+			"position": [480, 200],
+			"id": "switchset-2",
+			"name": "Switch Set"
+		}
+	],
+	"connections": {
+		"Manual Trigger": {
+			"main": [[{"node": "Test Data", "type": "main", "index": 0}]]
+		},
+		"Test Data": {
+			"main": [[{"node": "Switch Set", "type": "main", "index": 0}]]
+		}
+	}
+}

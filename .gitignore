@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.js
+*.d.ts
+*.js.map
+!gulpfile.js
+!.eslintrc.js
+!.prettierrc.js
+!jest.config.js

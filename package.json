@@ -1,0 +1,53 @@
+{
+	"name": "n8n-nodes-switch-set",
+	"version": "0.1.0",
+	"description": "n8n node to assign field values based on conditions (like Switch + Set combined)",
+	"keywords": [
+		"n8n-community-node-package"
+	],
+	"license": "MIT",
+	"author": {
+		"name": "Luca Di Fazio"
+	},
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"lint": "eslint src --ext .ts",
+		"lintfix": "eslint src --ext .ts --fix",
+		"format": "prettier src --write",
+		"test": "jest",
+		"prepublishOnly": "npm run build && npm run lint"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"credentials": [],
+		"nodes": [
+			"dist/nodes/SwitchSet/SwitchSet.node.js"
+		]
+	},
+	"devDependencies": {
+		"@types/jest": "^30.0.0",
+		"@types/lodash": "^4.17.0",
+		"@types/node": "^20.0.0",
+		"@typescript-eslint/eslint-plugin": "~8.32.0",
+		"@typescript-eslint/parser": "~8.32.0",
+		"eslint": "^8.57.0",
+		"eslint-plugin-n8n-nodes-base": "^1.16.3",
+		"jest": "^30.3.0",
+		"jest-mock-extended": "^4.0.0",
+		"n8n-workflow": "*",
+		"prettier": "^3.5.3",
+		"ts-jest": "^29.4.6",
+		"typescript": "~5.4.0"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	},
+	"dependencies": {
+		"lodash": "^4.17.21"
+	}
+}

@@ -1,0 +1,124 @@
+{
+	"name": "[TEST] Switch Set - Titolo Contatto",
+	"settings": {},
+	"nodes": [
+		{
+			"parameters": {},
+			"type": "n8n-nodes-base.manualTrigger",
+			"typeVersion": 1,
+			"position": [0, 200],
+			"id": "trigger-1",
+			"name": "Manual Trigger"
+		},
+		{
+			"parameters": {
+				"jsCode": "return [\n  {json: {first_name: 'Paolo', last_name: 'Rossi', rag_soc: '', email: 'paolo@example.com', phone: '+39335123456'}},\n  {json: {first_name: '', last_name: '', rag_soc: 'ACME Srl', email: 'info@acme.it', phone: '+39026789012'}},\n  {json: {first_name: '', last_name: '', rag_soc: '', email: 'unknown@test.com', phone: ''}},\n  {json: {first_name: '', last_name: '', rag_soc: '', email: '', phone: '+39333000111'}}\n];"
+			},
+			"type": "n8n-nodes-base.code",
+			"typeVersion": 2,
+			"position": [240, 200],
+			"id": "code-data",
+			"name": "Test Data"
+		},
+		{
+			"parameters": {
+				"assignments": {
+					"values": [
+						{
+							"targetField": "titolo",
+							"rules": {
+								"values": [
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-1a",
+													"leftValue": "={{ $json.first_name }}",
+													"rightValue": "",
+													"operator": { "type": "string", "operation": "notEmpty" }
+												},
+												{
+													"id": "cond-1b",
+													"leftValue": "={{ $json.last_name }}",
+													"rightValue": "",
+													"operator": { "type": "string", "operation": "notEmpty" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "stringValue",
+										"stringValue": "={{ $json.first_name }} {{ $json.last_name }}"
+									},
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-2",
+													"leftValue": "={{ $json.rag_soc }}",
+													"rightValue": "",
+													"operator": { "type": "string", "operation": "notEmpty" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "stringValue",
+										"stringValue": "={{ $json.rag_soc }}"
+									},
+									{
+										"conditions": {
+											"options": {
+												"caseSensitive": false,
+												"leftValue": "",
+												"typeValidation": "loose"
+											},
+											"conditions": [
+												{
+													"id": "cond-3",
+													"leftValue": "={{ $json.email }}",
+													"rightValue": "",
+													"operator": { "type": "string", "operation": "notEmpty" }
+												}
+											],
+											"combinator": "and"
+										},
+										"type": "stringValue",
+										"stringValue": "={{ $json.email }}"
+									}
+								]
+							},
+							"defaultType": "stringValue",
+							"defaultStringValue": "Sconosciuto"
+						}
+					]
+				},
+				"options": {
+					"ignoreCase": true,
+					"looseTypeValidation": true
+				}
+			},
+			"type": "n8n-nodes-switch-set.switchSet",
+			"typeVersion": 1,
+			"position": [480, 200],
+			"id": "switchset-1",
+			"name": "Switch Set"
+		}
+	],
+	"connections": {
+		"Manual Trigger": {
+			"main": [[{"node": "Test Data", "type": "main", "index": 0}]]
+		},
+		"Test Data": {
+			"main": [[{"node": "Switch Set", "type": "main", "index": 0}]]
+		}
+	}
+}
